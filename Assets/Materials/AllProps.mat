@@ -85,6 +85,8 @@ Material:
     - _ZWrite: 1
     - _float: 0.5
     - _range: 5
+    - _refLevel: 1.24
+    - _texLevel: 1.31
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.091, g: 0, b: 0.68275833, a: 1}
