@@ -30,6 +30,7 @@ Shader "haslo/AllProps"
         void surf(Input IN, inout SurfaceOutput o)
         {
             o.Albedo = (tex2D(_texture, IN.uv_texture) * _range).rgb;
+            o.Emission = texCUBE(_cube, IN.worldRefl).rgb;
         }
         ENDCG
     }
