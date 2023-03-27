@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AllProps
-  m_Shader: {fileID: 4800000, guid: 84861c98beac94b3a99e0e69c210f1d8, type: 3}
+  m_Shader: {fileID: 4800000, guid: d43dd2d96257b415e912e35a663d1d3c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -60,11 +60,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _cube:
-        m_Texture: {fileID: 8900000, guid: fbb8a61bff6874611a2b6c5aaa4b807f, type: 2}
+        m_Texture: {fileID: 8900000, guid: cc4af41ce75fd4de58ec18266ee5b65f, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texture:
-        m_Texture: {fileID: 2800000, guid: a6d67545b5ae74983b3baff15e6174d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 38ea1322385af42dc88336ec294e18a5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _textureDisp:
+        m_Texture: {fileID: 2800000, guid: 114007da0c6c14ed39095e492eab8a79, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _textureNormal:
+        m_Texture: {fileID: 2800000, guid: 91b47099362ff4eb8b0128a3297d013b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _textureSpecular:
+        m_Texture: {fileID: 2800000, guid: 55f033a557740452c9db15b6534dd953, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -86,15 +98,17 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - _colorLevel: 0.29
     - _float: 0.5
+    - _normalLevel: 0.48
     - _range: 5
-    - _refLevel: 1.15
-    - _texLevel: 1.84
+    - _refLevel: 0.36
+    - _texLevel: 1.24
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.091, g: 0, b: 0.68275833, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _color: {r: 0.51277, g: 0.047058802, b: 0.6784314, a: 1}
+    - _color: {r: 0, g: 0.000007655574, b: 0.34901962, a: 1}
     - _colorAlbedo: {r: 0.5794767, g: 0.52674437, b: 0.8396226, a: 1}
     - _colorEmission: {r: 1, g: 0, b: 0, a: 1}
     - _vector: {r: 0.5, g: 1, b: 1, a: 1}
