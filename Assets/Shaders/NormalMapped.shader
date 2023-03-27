@@ -44,8 +44,8 @@ Shader "haslo/NormalMapped"
 
         void surf(Input IN, inout SurfaceOutput o)
         {
-            o.Albedo.rgb = (_color.rgb * _colorLevel).rgb + (tex2D(_texture, IN.uv_texture) * _texLevel).rgb;
-            o.Normal = UnpackNormal(tex2D(_textureNormal, IN.uv_textureNormal));
+            o.Albedo.rgb = (_color.rgb * _colorLevel).rgb + (tex2D(_texture, IN.uv_texture.yx) * _texLevel).rgb;
+            o.Normal = UnpackNormal(tex2D(_textureNormal, IN.uv_textureNormal.yx));
             o.Normal *= float3(_normalLevel, _normalLevel, 1);
             // o.Specular = tex2D(_textureSpecular, IN.uv_textureSpecular);
             o.Emission = (texCUBE(_cube, WorldReflectionVector(IN, o.Normal)) * _refLevel).rgb;
