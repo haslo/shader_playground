@@ -6,7 +6,7 @@ Shader "haslo/NormalMapped"
         _colorLevel ("Color Level", Range(0, 5)) = 1
         _texLevel ("Tex Level", Range(0, 5)) = 1
         _refLevel ("Reflection Level", Range(0, 5)) = 1
-        _normalLevel ("Normal Level", Range(0, 10)) = 1
+        _normalLevel ("Normal Level", Range(0, 3)) = 1
         _texture ("Texture", 2D) = "white" {}
         // _textureDisp ("Disp Texture", 2D) = "white" {}
         _textureNormal ("Normal Texture", 2D) = "bump" {}
