@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LightingPBR
-  m_Shader: {fileID: 4800000, guid: bf3409a3b280434fb2793cd0fa47f1c9, type: 3}
+  m_Name: LightingPBRSpecular
+  m_Shader: {fileID: 4800000, guid: 4768dd20908084fd18dff5dc51d6e0c3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -110,7 +110,7 @@ Material:
     - _texScale: 1
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.12224099, g: 0.6320754, b: 0.12337485, a: 1}
+    - _Color: {r: 0.64938545, g: 0.2783019, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0, g: 0.018627644, b: 1, a: 0}
     - _color: {r: 0.764151, g: 0.21069184, b: 0, a: 1}
