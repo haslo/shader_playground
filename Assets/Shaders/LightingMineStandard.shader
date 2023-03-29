@@ -5,6 +5,7 @@ Shader "haslo/LightingMineStandard"
         _Color ("Color", Color) = (0, 0.5, 0.5, 0.0)
         _MetallicTex ("Metallic (R)", 2D) = "white" {}
         _Metallic ("Metallic", Range(0.0, 1.0)) = 0.0
+        _Emissive ("Emission", Range(0.0, 0.5)) = 0.0
     }
     SubShader
     {
@@ -22,6 +23,7 @@ Shader "haslo/LightingMineStandard"
 
         sampler2D _MetallicTex;
         half _Metallic;
+        half _Emissive;
         float4 _Color;
 
         void surf(Input IN, inout SurfaceOutputStandard o)
@@ -29,6 +31,7 @@ Shader "haslo/LightingMineStandard"
             o.Albedo.rgb = _Color.rgb;
             o.Smoothness = tex2D (_MetallicTex, IN.uv_MetallicTex);
             o.Metallic = _Metallic;
+            o.Emission = tex2D (_MetallicTex, IN.uv_MetallicTex) * _Emissive;
         }
         ENDCG
     }
