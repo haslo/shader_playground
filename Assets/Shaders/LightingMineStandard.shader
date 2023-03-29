@@ -28,6 +28,7 @@ Shader "haslo/LightingMineStandard"
         {
             o.Albedo.rgb = _Color.rgb;
             o.Smoothness = tex2D (_MetallicTex, IN.uv_MetallicTex);
+            o.Metallic = _Metallic;
         }
         ENDCG
     }
