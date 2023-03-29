@@ -59,6 +59,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RampTex:
+        m_Texture: {fileID: 2800000, guid: da3d674abd13244b08d6f2e6a78cb2f9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _cube:
         m_Texture: {fileID: 8900000, guid: cc4af41ce75fd4de58ec18266ee5b65f, type: 2}
         m_Scale: {x: 1, y: 1}
@@ -110,7 +114,7 @@ Material:
     - _texScale: 1
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0.8335433, b: 1, a: 1}
+    - _Color: {r: 0.06808474, g: 0.720426, b: 0.8490566, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0, g: 0.018627644, b: 1, a: 0}
     - _color: {r: 0.764151, g: 0.21069184, b: 0, a: 1}
