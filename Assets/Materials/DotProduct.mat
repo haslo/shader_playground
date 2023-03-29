@@ -104,10 +104,10 @@ Material:
     - _normalLevel: 2.36
     - _range: 5
     - _refLevel: 1.08
-    - _rimPower: 3
-    - _stripeSize: 0.36
-    - _texLevel: 0.27
-    - _texScale: 9.46
+    - _rimPower: 5.45
+    - _stripeSize: 0.43
+    - _texLevel: 0.93
+    - _texScale: 7.14
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.091, g: 0, b: 0.68275833, a: 1}

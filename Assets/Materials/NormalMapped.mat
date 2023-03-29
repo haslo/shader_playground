@@ -100,11 +100,11 @@ Material:
     - _ZWrite: 1
     - _colorLevel: 0
     - _float: 0.5
-    - _normalLevel: 2.36
+    - _normalLevel: 1.85
     - _range: 5
-    - _refLevel: 1.08
-    - _texLevel: 1.22
-    - _texScale: 6.66
+    - _refLevel: 3.52
+    - _texLevel: 1.8
+    - _texScale: 2.75
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.091, g: 0, b: 0.68275833, a: 1}
