@@ -6,6 +6,8 @@ using UnityEngine;
 public class UpDownBunny : MonoBehaviour
 {
     private float _direction = 1;
+    public float upDownDistance = 0.2f;
+    public float upDownSpeed = 1f;
     
     void Start()
     {
@@ -14,7 +16,7 @@ public class UpDownBunny : MonoBehaviour
 
     private void Update()
     {
-        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + _direction * Time.deltaTime * 0.2f, this.transform.position.z);
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + _direction * Time.deltaTime * upDownDistance, this.transform.position.z);
     }
 
     private IEnumerator UpDown()
@@ -22,9 +24,9 @@ public class UpDownBunny : MonoBehaviour
         while (true)
         {
             _direction = 1;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(upDownSpeed);
             _direction = -1;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(upDownSpeed);
         }
     }
 }

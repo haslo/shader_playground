@@ -85,6 +85,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Gloss: 0.944
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -95,16 +96,19 @@ Material:
     - _Parallax: 0.02
     - _RimPower: 4.46
     - _SmoothnessTextureChannel: 0
+    - _Specular: 0.989
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     - _colorLevel: 1
     - _float: 0.5
+    - _gloss: 1
     - _normalLevel: 2.36
     - _range: 5
     - _refLevel: 1.08
     - _rimPower: 5.45
+    - _specular: 0.752
     - _stripeSize: 0.43
     - _texLevel: 0
     - _texScale: 1
@@ -113,9 +117,12 @@ Material:
     - _Color: {r: 0.091, g: 0, b: 0.68275833, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0, g: 0.018627644, b: 1, a: 0}
+    - _SpecColor: {r: 0, g: 0.92101526, b: 1, a: 1}
     - _color: {r: 0.12889388, g: 0.1021271, b: 0.8018868, a: 1}
     - _colorAlbedo: {r: 0.5794767, g: 0.52674437, b: 0.8396226, a: 1}
     - _colorEmission: {r: 1, g: 0, b: 0, a: 1}
+    - _colorSpecular: {r: 1, g: 1, b: 1, a: 1}
     - _rimColor: {r: 0, g: 0.5, b: 0.5, a: 0}
+    - _specColor: {r: 1, g: 1, b: 1, a: 1}
     - _vector: {r: 0.5, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

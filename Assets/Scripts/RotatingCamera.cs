@@ -5,6 +5,7 @@ using UnityEngine;
 public class RotatingCamera : MonoBehaviour
 {
     public float rotationSpeed = 10f;
+    public Vector3 target = new Vector3(0, 1f, 0);
 
     void Start()
     {
@@ -16,7 +17,7 @@ public class RotatingCamera : MonoBehaviour
         while (true)
         {
             transform.RotateAround(Vector3.zero, Vector3.up, rotationSpeed * Time.deltaTime);
-            transform.LookAt(new Vector3(0, 1f, 0));
+            transform.LookAt(target);
             yield return null;
         }
     }

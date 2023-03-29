@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RotatingBunny : MonoBehaviour
 {
+    public float rotationSpeed = 80f;
+    
     void Start()
     {
         StartCoroutine(Rotation());
@@ -13,7 +15,7 @@ public class RotatingBunny : MonoBehaviour
     {
         while (true)
         {
-            this.transform.Rotate(new Vector3(0, Time.deltaTime * 80f, 0));
+            this.transform.Rotate(new Vector3(0, Time.deltaTime * rotationSpeed, 0));
             yield return null;
         }
     }
