@@ -49,6 +49,7 @@ Shader "haslo/NormalMapped"
             o.Albedo.rgb = (_color.rgb * _colorLevel).rgb + (tex2D(_texture, IN.uv_texture.yx * _texScale) * _texLevel).rgb;
             o.Normal = UnpackNormal(tex2D(_textureNormal, IN.uv_textureNormal.yx * _texScale));
             o.Normal *= float3(_normalLevel, _normalLevel, 1);
+            o.Normal *= _SinTime.x * 0.5 + 1;
             // o.Specular = tex2D(_textureSpecular, IN.uv_textureSpecular);
             o.Emission = (texCUBE(_cube, WorldReflectionVector(IN, o.Normal)) * _refLevel).rgb;
         }
