@@ -10,10 +10,11 @@ Shader "haslo/LeavesShader"
         {
             "Queue" = "Transparent"
         }
+        // AlphaTest Greater 0.5
 
         CGPROGRAM
 
-        #pragma surface surf Lambert alpha:fade
+        #pragma surface surf Lambert alphatest:_Cutoff addshadow
 
         sampler2D _MainTex;
 
@@ -25,11 +26,12 @@ Shader "haslo/LeavesShader"
         void surf(Input IN, inout SurfaceOutput o)
         {
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex).rgba;
+            if (c.a < 0.5) discard;
             o.Albedo = c.rgb;
             o.Alpha = c.a;
         }
         
         ENDCG
     }
-    Fallback "Legacy Shaders/Transparent/Cutout/VertexLit"
+    Fallback "Diffuse"
 }
