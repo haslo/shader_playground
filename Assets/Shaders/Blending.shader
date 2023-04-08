@@ -11,7 +11,7 @@ Shader "haslo/Blending"
             "Queue" = "Transparent"
         }
         
-        Blend SrcAlpha SrcColor
+        Blend SrcAlpha OneMinusSrcAlpha
         Cull off
         
         Pass
