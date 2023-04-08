@@ -10,6 +10,8 @@ Shader "haslo/LeavesShaderCutoff"
         {
             "Queue" = "Transparent"
         }
+        
+        Cull off
 
         CGPROGRAM
 
