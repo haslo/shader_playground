@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LightingLambert
-  m_Shader: {fileID: 4800000, guid: f613eaef3c1654126a64094c627821e5, type: 3}
+  m_Name: Hologram Occlusion
+  m_Shader: {fileID: 4800000, guid: 936c6c2cccff94ef18de7fc0610ab322, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -59,26 +59,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _cube:
-        m_Texture: {fileID: 8900000, guid: cc4af41ce75fd4de58ec18266ee5b65f, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texture:
-        m_Texture: {fileID: 2800000, guid: 4e938ebda52284e74a7222ff5a514fa8, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _textureDisp:
-        m_Texture: {fileID: 2800000, guid: 114007da0c6c14ed39095e492eab8a79, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _textureNormal:
-        m_Texture: {fileID: 2800000, guid: 57937160efa5b46119e3bdc7fc651b56, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _textureSpecular:
-        m_Texture: {fileID: 2800000, guid: 55f033a557740452c9db15b6534dd953, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
@@ -90,32 +70,16 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _MySliderValue: 10
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RimPower: 4.46
+    - _RimPower: 1.62
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _colorLevel: 1
-    - _float: 0.5
-    - _normalLevel: 2.36
-    - _range: 5
-    - _refLevel: 1.08
-    - _rimPower: 5.45
-    - _stripeSize: 0.43
-    - _texLevel: 0
-    - _texScale: 1
     m_Colors:
-    - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.46818262, g: 0.48910713, b: 0.5943396, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0, g: 0.018627644, b: 1, a: 0}
-    - _color: {r: 0.764151, g: 0.21069184, b: 0, a: 1}
-    - _colorAlbedo: {r: 0.5794767, g: 0.52674437, b: 0.8396226, a: 1}
-    - _colorEmission: {r: 1, g: 0, b: 0, a: 1}
-    - _rimColor: {r: 0, g: 0.5, b: 0.5, a: 0}
-    - _vector: {r: 0.5, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 0.12156862, g: 0.69387406, b: 0.7921569, a: 0}
   m_BuildTextureStacks: []
