@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leaves
-  m_Shader: {fileID: 4800000, guid: 421da64b004644eafb7ec5c4d80cdda9, type: 3}
+  m_Name: Leaves Fade
+  m_Shader: {fileID: 4800000, guid: 0b7cf511308a844b7ba8e5e2d6261070, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

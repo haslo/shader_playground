@@ -1,8 +1,10 @@
-Shader "haslo/LeavesShader"
+Shader "haslo/LeavesShaderComplete"
 {
     Properties
     {
         _MainTex ("Main Texture", 2D) = "white" {}
+        _Color ("Main Color", Color) = (1, 1, 1, 1)
+        _Cutoff ("Alpha Cutoff", Range(0, 1)) = 0.1 
     }
     SubShader
     {
@@ -10,13 +12,14 @@ Shader "haslo/LeavesShader"
         {
             "Queue" = "Transparent"
         }
-        // AlphaTest Greater 0.5
 
         CGPROGRAM
 
-        #pragma surface surf Lambert alphatest:_Cutoff addshadow
+        #pragma surface surf Lambert alphatest:_Cutoff alpha:fade addshadow
 
         sampler2D _MainTex;
+        fixed4 _Color;
+        half _Cutoff;
 
         struct Input
         {
@@ -25,13 +28,13 @@ Shader "haslo/LeavesShader"
 
         void surf(Input IN, inout SurfaceOutput o)
         {
-            fixed4 c = tex2D(_MainTex, IN.uv_MainTex).rgba;
-            if (c.a < 0.5) discard;
+            fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+            if (c.a < _Cutoff) discard;
             o.Albedo = c.rgb;
             o.Alpha = c.a;
         }
         
         ENDCG
     }
-    Fallback "Diffuse"
+    Fallback "Transparent/Cutout/VertexLit"
 }
