@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatingBunny : MonoBehaviour
+public class RotatingEntity : MonoBehaviour
 {
     public float rotationSpeed = 80f;
     

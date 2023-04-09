@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpDownBunny : MonoBehaviour
+public class UpDownEntity : MonoBehaviour
 {
     private float _direction = 1;
     public float upDownDistance = 0.2f;

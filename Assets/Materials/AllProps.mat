@@ -102,8 +102,8 @@ Material:
     - _float: 0.5
     - _normalLevel: 0.48
     - _range: 5
-    - _refLevel: 0.36
-    - _texLevel: 1.24
+    - _refLevel: 1.3
+    - _texLevel: 1
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.091, g: 0, b: 0.68275833, a: 1}
