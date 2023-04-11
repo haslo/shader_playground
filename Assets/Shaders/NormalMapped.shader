@@ -1,7 +1,5 @@
-Shader "haslo/NormalMapped"
-{
-    Properties
-    {
+Shader "haslo/NormalMapped" {
+    Properties {
         _color ("Color", Color) = (1, 1, 1, 1)
         _colorLevel ("Color Level", Range(0, 5)) = 1
         _refLevel ("Reflection Level", Range(0, 5)) = 1
@@ -16,8 +14,7 @@ Shader "haslo/NormalMapped"
         _float ("Float", Float) = 0.5
         _vector ("Vector", Vector) = (0.5, 1, 1, 1)
     }
-    SubShader
-    {
+    SubShader {
         CGPROGRAM
         #pragma surface surf Lambert
 
@@ -35,18 +32,18 @@ Shader "haslo/NormalMapped"
         float _float;
         float4 _vector;
 
-        struct Input
-        {
+        struct Input {
             float2 uv_texture;
             float2 uv_textureDisp;
             float2 uv_textureNormal;
             float2 uv_textureSpecular;
-            float3 worldRefl; INTERNAL_DATA
+            float3 worldRefl;
+            INTERNAL_DATA
         };
 
-        void surf(Input IN, inout SurfaceOutput o)
-        {
-            o.Albedo.rgb = (_color.rgb * _colorLevel).rgb + (tex2D(_texture, IN.uv_texture.yx * _texScale) * _texLevel).rgb;
+        void surf(Input IN, inout SurfaceOutput o) {
+            o.Albedo.rgb = (_color.rgb * _colorLevel).rgb + (tex2D(_texture, IN.uv_texture.yx * _texScale) * _texLevel).
+                rgb;
             o.Normal = UnpackNormal(tex2D(_textureNormal, IN.uv_textureNormal.yx * _texScale));
             o.Normal *= float3(_normalLevel, _normalLevel, 1);
             o.Normal *= _SinTime.x * 0.5 + 1;

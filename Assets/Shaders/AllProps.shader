@@ -1,7 +1,5 @@
-Shader "haslo/AllProps"
-{
-    Properties
-    {
+Shader "haslo/AllProps" {
+    Properties {
         _color ("Color", Color) = (1, 1, 1, 1)
         _texLevel ("Tex Level", Range(0, 5)) = 1
         _refLevel ("Reflection Level", Range(0, 5)) = 1
@@ -10,8 +8,7 @@ Shader "haslo/AllProps"
         _float ("Float", Float) = 0.5
         _vector ("Vector", Vector) = (0.5, 1, 1, 1)
     }
-    SubShader
-    {
+    SubShader {
         CGPROGRAM
         #pragma surface surf Lambert
 

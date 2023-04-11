@@ -1,23 +1,19 @@
-Shader "haslo/LightingMineStandard"
-{
-    Properties
-    {
+Shader "haslo/LightingMineStandard" {
+    Properties {
         _Color ("Color", Color) = (0, 0.5, 0.5, 0.0)
         _MetallicTex ("Metallic (R)", 2D) = "white" {}
         _Metallic ("Metallic", Range(0.0, 1.0)) = 0.0
         _Emissive ("Emission", Range(0.0, 0.5)) = 0.0
     }
-    SubShader
-    {
+    SubShader {
         Tags {
             "Queue" = "Geometry"
         }
-        
+
         CGPROGRAM
         #pragma surface surf Standard
 
-        struct Input
-        {
+        struct Input {
             float2 uv_MetallicTex;
         };
 
@@ -26,12 +22,11 @@ Shader "haslo/LightingMineStandard"
         half _Emissive;
         float4 _Color;
 
-        void surf(Input IN, inout SurfaceOutputStandard o)
-        {
+        void surf(Input IN, inout SurfaceOutputStandard o) {
             o.Albedo.rgb = _Color.rgb;
-            o.Smoothness = tex2D (_MetallicTex, IN.uv_MetallicTex);
+            o.Smoothness = tex2D(_MetallicTex, IN.uv_MetallicTex);
             o.Metallic = _Metallic;
-            o.Emission = tex2D (_MetallicTex, IN.uv_MetallicTex) * _Emissive;
+            o.Emission = tex2D(_MetallicTex, IN.uv_MetallicTex) * _Emissive;
         }
         ENDCG
     }

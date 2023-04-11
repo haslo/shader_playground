@@ -1,9 +1,7 @@
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 // Shader "Standard"
-Shader "haslo/LightingPBR"
-{
-    Properties
-    {
+Shader "haslo/LightingPBR" {
+    Properties {
         _Color("Color", Color) = (1,1,1,1)
         _MainTex("Albedo", 2D) = "white" {}
 
@@ -48,21 +46,23 @@ Shader "haslo/LightingPBR"
     }
 
     CGINCLUDE
-        #define UNITY_SETUP_BRDF_INPUT MetallicSetup
+    #define UNITY_SETUP_BRDF_INPUT MetallicSetup
     ENDCG
 
-    SubShader
-    {
-        Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
+    SubShader {
+        Tags {
+            "RenderType"="Opaque" "PerformanceChecks"="False"
+        }
         LOD 300
 
 
         // ------------------------------------------------------------------
         //  Base forward pass (directional light, emission, lightmaps, ...)
-        Pass
-        {
+        Pass {
             Name "FORWARD"
-            Tags { "LightMode" = "ForwardBase" }
+            Tags {
+                "LightMode" = "ForwardBase"
+            }
 
             Blend [_SrcBlend] [_DstBlend]
             ZWrite [_ZWrite]
@@ -91,17 +91,19 @@ Shader "haslo/LightingPBR"
             #pragma vertex vertBase
             #pragma fragment fragBase
             #include "UnityStandardCoreForward.cginc"
-
             ENDCG
         }
         // ------------------------------------------------------------------
         //  Additive forward pass (one light per pass)
-        Pass
-        {
+        Pass {
             Name "FORWARD_DELTA"
-            Tags { "LightMode" = "ForwardAdd" }
+            Tags {
+                "LightMode" = "ForwardAdd"
+            }
             Blend [_SrcBlend] One
-            Fog { Color (0,0,0,0) } // in additive pass fog should be black
+            Fog {
+                Color (0,0,0,0)
+            } // in additive pass fog should be black
             ZWrite Off
             ZTest LEqual
 
@@ -127,14 +129,15 @@ Shader "haslo/LightingPBR"
             #pragma vertex vertAdd
             #pragma fragment fragAdd
             #include "UnityStandardCoreForward.cginc"
-
             ENDCG
         }
         // ------------------------------------------------------------------
         //  Shadow rendering pass
         Pass {
             Name "ShadowCaster"
-            Tags { "LightMode" = "ShadowCaster" }
+            Tags {
+                "LightMode" = "ShadowCaster"
+            }
 
             ZWrite On ZTest LEqual
 
@@ -157,15 +160,15 @@ Shader "haslo/LightingPBR"
             #pragma fragment fragShadowCaster
 
             #include "UnityStandardShadow.cginc"
-
             ENDCG
         }
         // ------------------------------------------------------------------
         //  Deferred pass
-        Pass
-        {
+        Pass {
             Name "DEFERRED"
-            Tags { "LightMode" = "Deferred" }
+            Tags {
+                "LightMode" = "Deferred"
+            }
 
             CGPROGRAM
             #pragma target 3.0
@@ -192,17 +195,17 @@ Shader "haslo/LightingPBR"
             #pragma fragment fragDeferred
 
             #include "UnityStandardCore.cginc"
-
             ENDCG
         }
 
         // ------------------------------------------------------------------
         // Extracts information for lightmapping, GI (emission, albedo, ...)
         // This pass it not used during regular rendering.
-        Pass
-        {
+        Pass {
             Name "META"
-            Tags { "LightMode"="Meta" }
+            Tags {
+                "LightMode"="Meta"
+            }
 
             Cull Off
 
@@ -221,17 +224,19 @@ Shader "haslo/LightingPBR"
         }
     }
 
-    SubShader
-    {
-        Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
+    SubShader {
+        Tags {
+            "RenderType"="Opaque" "PerformanceChecks"="False"
+        }
         LOD 150
 
         // ------------------------------------------------------------------
         //  Base forward pass (directional light, emission, lightmaps, ...)
-        Pass
-        {
+        Pass {
             Name "FORWARD"
-            Tags { "LightMode" = "ForwardBase" }
+            Tags {
+                "LightMode" = "ForwardBase"
+            }
 
             Blend [_SrcBlend] [_DstBlend]
             ZWrite [_ZWrite]
@@ -257,17 +262,19 @@ Shader "haslo/LightingPBR"
             #pragma vertex vertBase
             #pragma fragment fragBase
             #include "UnityStandardCoreForward.cginc"
-
             ENDCG
         }
         // ------------------------------------------------------------------
         //  Additive forward pass (one light per pass)
-        Pass
-        {
+        Pass {
             Name "FORWARD_DELTA"
-            Tags { "LightMode" = "ForwardAdd" }
+            Tags {
+                "LightMode" = "ForwardAdd"
+            }
             Blend [_SrcBlend] One
-            Fog { Color (0,0,0,0) } // in additive pass fog should be black
+            Fog {
+                Color (0,0,0,0)
+            } // in additive pass fog should be black
             ZWrite Off
             ZTest LEqual
 
@@ -289,14 +296,15 @@ Shader "haslo/LightingPBR"
             #pragma vertex vertAdd
             #pragma fragment fragAdd
             #include "UnityStandardCoreForward.cginc"
-
             ENDCG
         }
         // ------------------------------------------------------------------
         //  Shadow rendering pass
         Pass {
             Name "ShadowCaster"
-            Tags { "LightMode" = "ShadowCaster" }
+            Tags {
+                "LightMode" = "ShadowCaster"
+            }
 
             ZWrite On ZTest LEqual
 
@@ -313,17 +321,17 @@ Shader "haslo/LightingPBR"
             #pragma fragment fragShadowCaster
 
             #include "UnityStandardShadow.cginc"
-
             ENDCG
         }
 
         // ------------------------------------------------------------------
         // Extracts information for lightmapping, GI (emission, albedo, ...)
         // This pass it not used during regular rendering.
-        Pass
-        {
+        Pass {
             Name "META"
-            Tags { "LightMode"="Meta" }
+            Tags {
+                "LightMode"="Meta"
+            }
 
             Cull Off
 

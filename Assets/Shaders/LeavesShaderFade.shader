@@ -1,36 +1,28 @@
-Shader "haslo/LeavesShaderFade"
-{
-    Properties
-    {
+Shader "haslo/LeavesShaderFade" {
+    Properties {
         _MainTex ("Main Texture", 2D) = "white" {}
     }
-    SubShader
-    {
-        Tags
-        {
+    SubShader {
+        Tags {
             "Queue" = "Transparent"
         }
-        
+
         Cull off
 
         CGPROGRAM
-
         #pragma surface surf Lambert alpha:fade
 
         sampler2D _MainTex;
 
-        struct Input
-        {
+        struct Input {
             float2 uv_MainTex;
         };
 
-        void surf(Input IN, inout SurfaceOutput o)
-        {
+        void surf(Input IN, inout SurfaceOutput o) {
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex).rgba;
             o.Albedo = c.rgb;
             o.Alpha = c.a;
         }
-        
         ENDCG
     }
     Fallback "Diffuse"

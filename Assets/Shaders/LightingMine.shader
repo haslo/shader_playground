@@ -1,16 +1,13 @@
-Shader "haslo/LightingMine"
-{
-    Properties
-    {
+Shader "haslo/LightingMine" {
+    Properties {
         _Color ("Color", Color) = (0, 0.5, 0.5, 0.0)
         _RampTex ("Ramp Texture", 2D) = "white" {}
     }
-    SubShader
-    {
+    SubShader {
         Tags {
             "Queue" = "Geometry"
         }
-        
+
         CGPROGRAM
         // #pragma surface surf BasicLambert
         // #pragma surface surf BasicBlinnPhong
@@ -22,7 +19,7 @@ Shader "haslo/LightingMine"
         sampler2D _RampTex;
 
         half4 LightingBasicLambert(SurfaceOutput s, half3 lightDir, half atten) {
-            half NdotL = dot (s.Normal, lightDir);
+            half NdotL = dot(s.Normal, lightDir);
             half4 c;
             // c.rgb = s.Albedo * _LightColor0.rgb * (pow(1 - NdotL, 4) * atten);
             c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten);
@@ -58,7 +55,8 @@ Shader "haslo/LightingMine"
 
         half4 LightingBasicToon(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
             float diff = max(0, dot(s.Normal, lightDir));
-            float h = diff * 0.5 + 0.5; // h value, used as uv value for pulling out the texture components from the ramp
+            float h = diff * 0.5 + 0.5;
+            // h value, used as uv value for pulling out the texture components from the ramp
             float2 rh = h;
             float3 ramp = tex2D(_RampTex, rh).rgb;
 
@@ -70,7 +68,8 @@ Shader "haslo/LightingMine"
 
         half4 LightingTimedToon(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
             float diff = max(0, dot(s.Normal, lightDir));
-            float h = diff * 0.5 + 0.5; // h value, used as uv value for pulling out the texture components from the ramp
+            float h = diff * 0.5 + 0.5;
+            // h value, used as uv value for pulling out the texture components from the ramp
             float2 rh = h;
             float3 ramp = tex2D(_RampTex, rh).rgb;
 
@@ -80,18 +79,16 @@ Shader "haslo/LightingMine"
             float dotN = pow(1 - dot(viewDir, s.Normal), 2);
             fixed rim = (dotN > 0.5) ? dotN : 0;
             c.rgb += rim * half4(1, 0, 1, 0.5);
-            
+
             c.a = s.Alpha;
             return c;
         }
 
-        struct Input
-        {
+        struct Input {
             float2 uv_texture;
         };
 
-        void surf(Input IN, inout SurfaceOutput o)
-        {
+        void surf(Input IN, inout SurfaceOutput o) {
             o.Albedo.rgb = _Color.rgb;
         }
         ENDCG

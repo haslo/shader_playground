@@ -1,21 +1,16 @@
-Shader "haslo/Blending"
-{
-    Properties
-    {
+Shader "haslo/Blending" {
+    Properties {
         _MainTex ("Texture", 2D) = "black" {}
     }
-    SubShader
-    {
-        Tags
-        {
+    SubShader {
+        Tags {
             "Queue" = "Transparent"
         }
-        
+
         Blend SrcAlpha OneMinusSrcAlpha
         Cull off
-        
-        Pass
-        {
+
+        Pass {
             SetTexture [_MainTex] { combine texture }
         }
     }
