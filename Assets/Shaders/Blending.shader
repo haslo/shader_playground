@@ -7,7 +7,9 @@ Shader "haslo/Blending" {
             "Queue" = "Transparent"
         }
 
-        Blend SrcAlpha OneMinusSrcAlpha
+        // Blend SrcAlpha OneMinusSrcAlpha
+        Blend DstColor Zero
+        // see https://docs.unity3d.com/Manual/SL-Blend.html
         Cull off
 
         Pass {
