@@ -16,5 +16,5 @@ Shader "haslo/Blending" {
             SetTexture [_MainTex] { combine texture }
         }
     }
-    FallBack "Diffuse"
+    // FallBack "Diffuse"
 }
