@@ -1,4 +1,4 @@
-Shader "haslo/FirstVertexFragment" {
+Shader "haslo/PresetUnlitShader" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
     }
