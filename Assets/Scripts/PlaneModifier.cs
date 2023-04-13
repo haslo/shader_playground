@@ -3,19 +3,18 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class PlaneModifier : MonoBehaviour {
-
     private Renderer matRenderer;
-    
+
     private float targetUVX = 1;
     private float targetUVY = 1;
     private float deltaUVX = 1;
     private float deltaUVY = 1;
-    
+
     private float targetUVOffsetX = 0;
     private float targetUVOffsetY = 0;
     private float deltaUVOffsetX = 0;
     private float deltaUVOffsetY = 0;
-    
+
     private static readonly int SCALE_UVX = Shader.PropertyToID("_ScaleUVX");
     private static readonly int SCALE_UVY = Shader.PropertyToID("_ScaleUVY");
     private static readonly int OFFSET_UVX = Shader.PropertyToID("_OffsetUVX");
@@ -38,6 +37,7 @@ public class PlaneModifier : MonoBehaviour {
             yield return new WaitForSeconds(waitTime);
         }
     }
+
     IEnumerator TargetUVSelectionY() {
         while (true) {
             var waitTime = Random.Range(1f, 4f);
@@ -57,6 +57,7 @@ public class PlaneModifier : MonoBehaviour {
             yield return new WaitForSeconds(waitTime);
         }
     }
+
     IEnumerator TargetOffsetSelectionY() {
         while (true) {
             var waitTime = Random.Range(1f, 4f);
@@ -66,9 +67,8 @@ public class PlaneModifier : MonoBehaviour {
             yield return new WaitForSeconds(waitTime);
         }
     }
-    
-    void Update()
-    {
+
+    void Update() {
         var currentUVX = matRenderer.material.GetFloat(SCALE_UVX);
         var currentUVY = matRenderer.material.GetFloat(SCALE_UVY);
         matRenderer.material.SetFloat(SCALE_UVX, currentUVX + deltaUVX * Time.deltaTime);
