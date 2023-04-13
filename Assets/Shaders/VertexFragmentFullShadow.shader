@@ -46,7 +46,8 @@ Shader "haslo/VertexFragmentFullShadow" {
             fixed4 frag (v2f i) : SV_Target {
                 fixed4 col = tex2D(_MainTex, i.uv);
                 fixed shadow = SHADOW_ATTENUATION(i);
-                col.rgb *= i.diff * shadow;
+                col.r *= i.diff;
+                col.gb *= i.diff * shadow;
                 return col;
             }
             ENDCG
