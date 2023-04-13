@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FirstVertexFragment
+  m_Name: VertexFragmentFirst
   m_Shader: {fileID: 4800000, guid: 7313df529bc8a475690034887ed32037, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -71,7 +71,11 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OffsetUVX: 0
+    - _OffsetUVY: 0
     - _Parallax: 0.02
+    - _ScaleUVX: 1
+    - _ScaleUVY: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
