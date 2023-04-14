@@ -76,10 +76,10 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Scale1: 1.6
-    - _Scale2: 2
-    - _Scale3: 2.4
-    - _Scale4: 3.3
+    - _Scale1: 0.5
+    - _Scale2: 2.1
+    - _Scale3: 0.9
+    - _Scale4: 8.8
     - _ScaleUV: 322
     - _ScaleUVX: 1
     - _ScaleUVY: 1
