@@ -2,7 +2,7 @@ Shader "haslo/EffectsGlass" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
         _NormalMap ("Normal Map", 2D) = "bump" {}
-        _ScaleUV ("Scale", Range(1,10)) = 1
+        _ScaleUV ("Scale", Range(1, 100)) = 1
     }
     SubShader {
         Cull Off
@@ -33,6 +33,8 @@ Shader "haslo/EffectsGlass" {
             float4 _GrabTexture_TexelSize;
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            sampler2D _NormalMap;
+            float4 _NormalMap_ST;
             float _ScaleUV;
 
             v2f vert(appdata v) {
@@ -41,11 +43,18 @@ Shader "haslo/EffectsGlass" {
                 o.uvgrab.xy = (float2(o.vertex.x, -o.vertex.y) + o.vertex.w) * 0.5;
                 o.uvgrab.zw = o.vertex.zw;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uvbump = TRANSFORM_TEX(v.uv, _NormalMap);
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target {
+                half2 bump = UnpackNormal(tex2D(_NormalMap, i.uvbump)).rg;
+                float2 offset = bump * _ScaleUV * _GrabTexture_TexelSize.xy;
+                i.uvgrab.xy = offset * i.uvgrab.z + i.uvgrab.xy;
+                
                 fixed4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab));
+                fixed4 tint = tex2D(_MainTex, i.uv);
+                col *= tint;
                 return col;
             }
             ENDCG

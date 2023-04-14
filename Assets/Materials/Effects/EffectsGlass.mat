@@ -76,7 +76,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ScaleUV: 1
+    - _ScaleUV: 100
     - _ScaleUVX: 1
     - _ScaleUVY: 1
     - _SmoothnessTextureChannel: 0
