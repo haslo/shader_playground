@@ -1,63 +1,53 @@
 Shader "haslo/EffectsPlasma" {
     Properties {
-        _MainTex ("Texture", 2D) = "white" {}
-        _NormalMap ("Normal Map", 2D) = "bump" {}
-        _ScaleUV ("Scale", Range(1, 1000)) = 1
+        _Tint ("Color Tint", Color) = (1, 1, 1, 1)
+        _Speed ("Speed", Range(1, 100)) = 10
+        _Scale1 ("Scale 1", Range(0.1, 10)) = 2
+        _Scale2 ("Scale 2", Range(0.1, 10)) = 2
+        _Scale3 ("Scale 3", Range(0.1, 10)) = 2
+        _Scale4 ("Scale 4", Range(0.1, 10)) = 2
     }
     SubShader {
-        Cull Off
-        Tags {
-            "Queue" = "Transparent"
+        CGPROGRAM
+        #pragma surface surf Lambert
+
+        struct Input {
+            float2 uv_MainTex;
+            float3 worldPos;
+        };
+
+        float4 _Tint;
+        float _Speed;
+        float _Scale1;
+        float _Scale2;
+        float _Scale3;
+        float _Scale4;
+
+        void surf (Input IN, inout SurfaceOutput o) {
+            const float PI = 3.14159265;
+            float t = _Time.x * _Speed;
+
+            // vertical
+            float c = sin(IN.worldPos.z * _Scale1 + t);
+
+            // horizontal
+            c += sin(IN.worldPos.y * _Scale2 + t);
+
+            // diagonal
+            c += sin(_Scale3 * (IN.worldPos.z * sin(t/2.0) + IN.worldPos.y * cos(t/3.0)) + t);
+
+            // circular
+            float c1 = pow(IN.worldPos.z + 0.5 * sin(t / 5), 2);
+            float c2 = pow(IN.worldPos.y + 0.5 * cos(t / 3), 2);
+            c += sin(sqrt(_Scale4 * (c1 + c2) + 1 + t));
+            
+            o.Albedo.r = sin(c / 4.0 * PI);
+            o.Albedo.g = sin(c / 4.0 * PI + 2 * PI / 4);
+            o.Albedo.b = sin(c / 4.0 * PI + 4 * PI / 4);
+
+            o.Albedo += _Tint;
         }
-        GrabPass {}
-        Pass {
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-
-            #include "UnityCG.cginc"
-
-            struct appdata {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
-
-            struct v2f {
-                float2 uv : TEXCOORD0;
-                float4 uvgrab : TEXCOORD1;
-                float2 uvbump : TEXCOORD2;
-                float4 vertex : SV_POSITION;
-            };
-
-            sampler2D _GrabTexture;
-            float4 _GrabTexture_TexelSize;
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            sampler2D _NormalMap;
-            float4 _NormalMap_ST;
-            float _ScaleUV;
-
-            v2f vert(appdata v) {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uvgrab.xy = (float2(o.vertex.x, -o.vertex.y) + o.vertex.w) * 0.5;
-                o.uvgrab.zw = o.vertex.zw;
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                o.uvbump = TRANSFORM_TEX(v.uv, _NormalMap);
-                return o;
-            }
-
-            fixed4 frag(v2f i) : SV_Target {
-                half2 bump = UnpackNormal(tex2D(_NormalMap, i.uvbump)).rg;
-                float2 offset = bump * _ScaleUV * _GrabTexture_TexelSize.xy;
-                i.uvgrab.xy = offset + i.uvgrab.xy;
-                
-                fixed4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab));
-                fixed4 tint = tex2D(_MainTex, i.uv);
-                col *= tint;
-                return col;
-            }
-            ENDCG
-        }
+        ENDCG
     }
+    Fallback "Diffuse"
 }
