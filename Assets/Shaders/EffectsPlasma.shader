@@ -1,5 +1,6 @@
 Shader "haslo/EffectsPlasma" {
     Properties {
+        _MainTex ("Texture", 2D) = "white" {}
         _Tint ("Color Tint", Color) = (1, 1, 1, 1)
         _Speed ("Speed", Range(1, 100)) = 10
         _Scale1 ("Scale 1", Range(0.1, 10)) = 2
@@ -8,6 +9,7 @@ Shader "haslo/EffectsPlasma" {
         _Scale4 ("Scale 4", Range(0.1, 10)) = 2
     }
     SubShader {
+        Cull Off
         CGPROGRAM
         #pragma surface surf Lambert
 
@@ -28,17 +30,17 @@ Shader "haslo/EffectsPlasma" {
             float t = _Time.x * _Speed;
 
             // vertical
-            float c = sin(IN.worldPos.z * _Scale1 + t);
+            float c = sin(IN.uv_MainTex.x * 5 * _Scale1 + t);
 
             // horizontal
-            c += sin(IN.worldPos.y * _Scale2 + t);
+            c += sin(IN.uv_MainTex.y * 5 * _Scale2 + t);
 
             // diagonal
-            c += sin(_Scale3 * (IN.worldPos.z * sin(t/2.0) + IN.worldPos.y * cos(t/3.0)) + t);
+            c += sin(_Scale3 * (IN.uv_MainTex.x * 5 * sin(t/2.0) + IN.uv_MainTex.y * 5 * cos(t/3.0)) + t);
 
             // circular
-            float c1 = pow(IN.worldPos.z + 0.5 * sin(t / 5), 2);
-            float c2 = pow(IN.worldPos.y + 0.5 * cos(t / 3), 2);
+            float c1 = pow(IN.uv_MainTex.x * 5 + 0.7 * sin(t / 5), 2);
+            float c2 = pow(IN.uv_MainTex.y * 5 + 0.7 * cos(t / 3), 2);
             c += sin(sqrt(_Scale4 * (c1 + c2) + 1 + t));
             
             o.Albedo.r = sin(c / 4.0 * PI);
