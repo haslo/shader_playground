@@ -3,6 +3,7 @@ Shader "haslo/EffectsExtrude" {
         _MainTex ("Texture", 2D) = "black" {}
     }
     SubShader {
+        Cull Off
         Tags {
             "Queue" = "Geometry"
         }
