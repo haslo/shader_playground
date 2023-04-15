@@ -3,7 +3,7 @@ Shader "haslo/VolumetricFog" {
         _FogCenter ("Fog Center/Radius", Vector) = (0, 0, 0, 0.5)
         _FogColor ("Fog Colour", Color) = (1, 1, 1, 1)
         _InnerRatio ("Inner Ratio", Range(0.0, 0.9)) = 0.5
-        _Density ("Density", Range(0.0, 1.0)) = 0.5
+        _Density ("Density", Range(0.0, 10.0)) = 5
         _NumSteps ("Number of Steps", Range(1, 50)) = 10
     }
     
@@ -36,8 +36,8 @@ Shader "haslo/VolumetricFog" {
                 float b = 2 * dot(view_direction, local_cam);
                 float c = dot(local_cam, local_cam) - sphere_radius * sphere_radius;
                 float d = b * b - 4 * a * c;
-                if (d <= 0.0f) {
-                    return 0.0f;
+                if (d <= 0) {
+                    return 0;
                 }
                 const float d_sqrt = sqrt(d);
                 const float dist1 = max((-b - d_sqrt) / 2 * a, 0);
@@ -46,7 +46,7 @@ Shader "haslo/VolumetricFog" {
                 const float back_depth = min(dist2, max_distance);
                 float sample = dist1;
                 const float step_distance = (back_depth - dist1) / num_steps;
-                const float step_contribution = density;
+                const float step_contribution = density / num_steps;
 
                 const float center_value = 1 / (1 - inner_ratio);
 
@@ -58,7 +58,7 @@ Shader "haslo/VolumetricFog" {
                     clarity *= 1 - fog_amount;
                     sample += step_distance;
                 }
-                return 1; // - clarity;
+                return 1 - clarity;
             }
                         
             float4 _FogCenter;
@@ -83,7 +83,7 @@ Shader "haslo/VolumetricFog" {
 
                 // paint from inside, too (platform independently)
                 // https://docs.unity3d.com/Manual/SL-Platform-Differences.html
-                const float in_front_of = (o.pos.z / o .pos.w) > 0;
+                const float in_front_of = (o.pos.z / o.pos.w) > 0;
                 o.pos.z *= in_front_of;
                 
                 return o;
@@ -91,8 +91,8 @@ Shader "haslo/VolumetricFog" {
 
             fixed4 frag(v2f i) : SV_Target {
                 half4 col = half4(1, 1, 1, 1);
-                const float depth = LinearEyeDepth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos))));
-                const float view_dir = normalize(i.viewDir);
+                const float depth = LinearEyeDepth (UNITY_SAMPLE_DEPTH (tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD (i.projPos))));
+                const float3 view_dir = normalize(i.viewDir);
 
                 const float fog_alpha = calculate_fog_intensity(_FogCenter.xyz,
                                                                 _FogCenter.w,

@@ -63,13 +63,13 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Density: 0.5
+    - _Density: 1.7
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _InnerRatio: 0.5
+    - _InnerRatio: 0.52
     - _Metallic: 0
     - _Mode: 0
     - _NumSteps: 10
