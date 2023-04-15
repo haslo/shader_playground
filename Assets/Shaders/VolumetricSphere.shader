@@ -1,5 +1,7 @@
 Shader "haslo/VolumetricSphere" {
-    
+    Properties {
+        _SphereCenter ("Sphere Center/Radius", Vector) = (0, 0, 0, 0.5)
+    }
     
     SubShader {
         Tags {
@@ -15,6 +17,8 @@ Shader "haslo/VolumetricSphere" {
             #include "UnityCG.cginc"
             #include "UnityLightingCommon.cginc"
 
+            float4 _SphereCenter;
+            
             struct appdata {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
@@ -37,7 +41,7 @@ Shader "haslo/VolumetricSphere" {
                 return o;
             }
 
-            #define STEPS 128
+            #define STEPS 256
             #define STEP_SIZE 0.01
 
             bool SphereHit(float3 position, float3 center, float radius) {
@@ -46,7 +50,7 @@ Shader "haslo/VolumetricSphere" {
             
             float3 RaymarchHit(float3 position, float3 direction) {
                 for(int i = 0; i < STEPS; i++) {
-                    if (SphereHit(position, float3(0, 0, 0), 0.5)) { // center here
+                    if (SphereHit(position, _SphereCenter.xyz, _SphereCenter.w)) {
                         return position;
                     }
                     position += direction * STEP_SIZE;
@@ -59,7 +63,7 @@ Shader "haslo/VolumetricSphere" {
                 float3 worldPosition = i.wPos;
                 float3 depth = RaymarchHit(worldPosition, viewDirection);
                 
-                half3 worldNormal = depth - float3(0, 0, 0); // center here
+                half3 worldNormal = depth - _SphereCenter.xyz;
                 half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
 
                 if (length(depth) != 0) {
