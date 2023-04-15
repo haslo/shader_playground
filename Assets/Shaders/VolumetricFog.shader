@@ -21,21 +21,15 @@ Shader "haslo/VolumetricFog" {
             #pragma vertex vert
             #pragma fragment frag
             #include "UnityCG.cginc"
-            
-            float4 _FogCenter;
-            fixed4 _FogColor;
-            float _InnerRatio;
-            float _Density;
-            sampler2D _CameraDepthTexture;
-            float _NumSteps;
 
-            float CalculateFogIntensity(float3 sphere_center,
+            float calculate_fog_intensity(float3 sphere_center,
                                         float sphere_radius,
                                         float inner_ratio,
                                         float density,
                                         float3 camera_position,
                                         float3 view_direction,
-                                        float max_distance) {
+                                        float max_distance,
+                                        float num_steps) {
                 // calculate ray/sphere intersections
                 const float3 local_cam = camera_position - sphere_center;
                 float a = dot(view_direction, view_direction);
@@ -45,28 +39,35 @@ Shader "haslo/VolumetricFog" {
                 if (d <= 0.0f) {
                     return 0.0f;
                 }
-                float d_sqrt = sqrt(d);
-                float dist1 = max((-b - d_sqrt) / 2 * a, 0);
-                float dist2 = max((-b + d_sqrt) / 2 * a, 0);
+                const float d_sqrt = sqrt(d);
+                const float dist1 = max((-b - d_sqrt) / 2 * a, 0);
+                const float dist2 = max((-b + d_sqrt) / 2 * a, 0);
 
-                float back_depth = min(dist2, max_distance);
+                const float back_depth = min(dist2, max_distance);
                 float sample = dist1;
-                float step_distance = (back_depth - dist1) / _NumSteps;
-                float step_contribution = density;
+                const float step_distance = (back_depth - dist1) / num_steps;
+                const float step_contribution = density;
 
-                float center_value = 1 / (1 - inner_ratio);
+                const float center_value = 1 / (1 - inner_ratio);
 
                 float clarity = 1;
-                for (int segment = 0; segment < _NumSteps; segment++) {
-                    float3 position = local_cam + view_direction * sample;
-                    float val = saturate(center_value * (1 - length(position) / sphere_radius));
-                    float fog_amount = saturate(val * step_contribution);
+                for (int segment = 0; segment < num_steps; segment++) {
+                    const float3 position = local_cam + view_direction * sample;
+                    const float val = saturate(center_value * (1 - length(position) / sphere_radius));
+                    const float fog_amount = saturate(val * step_contribution);
                     clarity *= 1 - fog_amount;
                     sample += step_distance;
                 }
-                return 1 - clarity;
+                return 1; // - clarity;
             }
-            
+                        
+            float4 _FogCenter;
+            fixed4 _FogColor;
+            float _InnerRatio;
+            float _Density;
+            sampler2D _CameraDepthTexture;
+            float _NumSteps;
+
             struct v2f {
                 float3 viewDir : TEXCOORD0;
                 float4 pos : SV_POSITION;
@@ -82,14 +83,28 @@ Shader "haslo/VolumetricFog" {
 
                 // paint from inside, too (platform independently)
                 // https://docs.unity3d.com/Manual/SL-Platform-Differences.html
-                float inFrontOf = (o.pos.z / o .pos.w) > 0;
-                o.pos.z *= inFrontOf;
+                const float in_front_of = (o.pos.z / o .pos.w) > 0;
+                o.pos.z *= in_front_of;
                 
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target {
                 half4 col = half4(1, 1, 1, 1);
+                const float depth = LinearEyeDepth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos))));
+                const float view_dir = normalize(i.viewDir);
+
+                const float fog_alpha = calculate_fog_intensity(_FogCenter.xyz,
+                                                                _FogCenter.w,
+                                                                _InnerRatio,
+                                                                _Density,
+                                                                _WorldSpaceCameraPos,
+                                                                view_dir,
+                                                                depth,
+                                                                _NumSteps);
+                col.rgb = _FogColor.rgb;
+                col.a = fog_alpha;
+                
                 return col;
             }
             ENDCG
