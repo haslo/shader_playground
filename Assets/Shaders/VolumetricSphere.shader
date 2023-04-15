@@ -1,6 +1,7 @@
 Shader "haslo/VolumetricSphere" {
     Properties {
         _SphereCenter ("Sphere Center/Radius", Vector) = (0, 0, 0, 0.5)
+        _AmbientIntensity ("Ambient Intensity", Range(0, 1)) = 0
     }
     
     SubShader {
@@ -18,6 +19,7 @@ Shader "haslo/VolumetricSphere" {
             #include "UnityLightingCommon.cginc"
 
             float4 _SphereCenter;
+            float _AmbientIntensity;
             
             struct appdata {
                 float4 vertex : POSITION;
@@ -73,7 +75,7 @@ Shader "haslo/VolumetricSphere" {
                     // return fixed4(depth.x, depth.y, depth.z, 1);
                     // depth *= i.diff;
                     // return fixed4(depth, 1); 
-                    return fixed4(nl * 3 * _LightColor0.r, nl * 3 * _LightColor0.g, nl * 3 * _LightColor0.b, 1);
+                    return fixed4(saturate((nl * 3 + _AmbientIntensity) * _LightColor0.rgb), 1);
                 } else {
                     return fixed4(1, 1, 1, 0);
                 }
