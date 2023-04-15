@@ -1,5 +1,10 @@
 Shader "haslo/VolumetricFog" {
-    
+    Properties {
+        _FogCenter ("Fog Center/Radius", Vector) = (0, 0, 0, 0.5)
+        _FogColor ("Fog Colour", Color) = (1, 1, 1, 1)
+        _InnerRatio ("Inner Ratio", Range(0.0, 0.9)) = 0.5
+        _Density ("Density", Range(0.0, 1.0)) = 0.5
+    }
     
     SubShader {
         Tags {
@@ -7,61 +12,45 @@ Shader "haslo/VolumetricFog" {
         }
 
         Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off Lighting Off ZWrite Off
+        ZTest Always
         
         Pass {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             #include "UnityCG.cginc"
-            #include "UnityLightingCommon.cginc"
-
-            struct appdata {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
 
             struct v2f {
-                float3 wPos : TEXCOORD0;
+                float3 viewDir : TEXCOORD0;
                 float4 pos : SV_POSITION;
+                float4 projPos : TEXCOORD1;
             };
 
-            v2f vert(appdata v) {
+            float4 _FogCenter;
+            fixed4 _FogColor;
+            float _InnerRatio;
+            float _Density;
+            sampler2D _CameraDepthTexture;
+
+            v2f vert(appdata_base v) {
                 v2f o;
+                float4 wPos = mul(unity_ObjectToWorld, v.vertex);
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.wPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.viewDir = wPos.xyz - _WorldSpaceCameraPos;
+                o.projPos = ComputeScreenPos(o.pos);
+
+                // paint from inside, too (platform independently)
+                // https://docs.unity3d.com/Manual/SL-Platform-Differences.html
+                float inFrontOf = (o.pos.z / o .pos.w) > 0;
+                o.pos.z *= inFrontOf;
+                
                 return o;
             }
 
-            #define STEPS 128
-            #define STEP_SIZE 0.01
-
-            bool SphereHit(float3 position, float3 center, float radius) {
-                return distance(position, center) < radius;
-            }
-            
-            float3 RaymarchHit(float3 position, float3 direction) {
-                for(int i = 0; i < STEPS; i++) {
-                    if (SphereHit(position, float3(0, 1.5, 0), 0.5)) {
-                        return position;
-                    }
-                    position += direction * STEP_SIZE;
-                }
-                return float3(0,0,0);
-            }
-            
             fixed4 frag(v2f i) : SV_Target {
-                float3 viewDirection = normalize(i.wPos - _WorldSpaceCameraPos);
-                float3 worldPosition = i.wPos;
-                float3 depth = RaymarchHit(worldPosition, viewDirection);
-                
-                half3 worldNormal = depth - float3(0 ,1.5, 0);
-                half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
-
-                if (length(depth) != 0) {
-                    return fixed4(nl * 3 * _LightColor0.r, nl * 3 * _LightColor0.g, nl * 3 * _LightColor0.b, 1);
-                } else {
-                    return fixed4(1, 1, 1, 0);
-                }
+                half4 col = half4(1, 1, 1, 1);
+                return col;
             }
             ENDCG
         }
