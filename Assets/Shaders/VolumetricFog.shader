@@ -91,7 +91,7 @@ Shader "haslo/VolumetricFog" {
 
             fixed4 frag(v2f i) : SV_Target {
                 half4 col = half4(1, 1, 1, 1);
-                const float depth = LinearEyeDepth (UNITY_SAMPLE_DEPTH (tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD (i.projPos))));
+                const float depth = LinearEyeDepth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos))));
                 const float3 view_dir = normalize(i.viewDir);
 
                 const float fog_alpha = calculate_fog_intensity(_FogCenter.xyz,

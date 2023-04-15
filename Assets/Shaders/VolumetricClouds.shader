@@ -31,10 +31,9 @@ Shader "haslo/VolumetricClouds" {
             
             struct v2f {
                 float4 pos : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float3 viewDir : TEXCOORD1;
-                float4 projPos : TEXCOORD2;
-                float3 worldPos : TEXCOORD3;
+                float3 viewDir : TEXCOORD0;
+                float4 projPos : TEXCOORD1;
+                float3 worldPos : TEXCOORD2;
             };
 
             float _Scale;
@@ -44,19 +43,31 @@ Shader "haslo/VolumetricClouds" {
             float _MaxHeight;
             float _FadeDist;
             float4 _SunDir;
-            sampler2D _CameraDepthTexture;
+            // sampler2D _CameraDepthTexture;
+
+            fixed4 raymarch(float3 cameraPos, float3 viewDir, fixed4 backgroundCol, float depth) {
+                fixed4 col = fixed4(0, 0, 0, 0);
+                return col;
+            }
 
             v2f vert(appdata_base v) {
                 v2f o;
-                float4 wPos = mul(unity_ObjectToWorld, v.vertex);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.viewDir = wPos.xyz - _WorldSpaceCameraPos;
+                o.viewDir = o.worldPos.xyz - _WorldSpaceCameraPos;
+                o.projPos = ComputeScreenPos(o.pos);
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target {
-                half4 col = half4(1, 1, 1, 1);
-                return col;
+                float depth = 1;
+                depth *= length(i.viewDir);
+                // alternatively:
+                // float depth = LinearEyeDepth(UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos))));
+                fixed4 col = half4(1, 1, 1, 0);
+                fixed4 clouds = raymarch(_WorldSpaceCameraPos, normalize(i.viewDir) * _StepScale, col, depth);
+                fixed3 mixedCol = col * (1.0 - clouds.a) + clouds.rgb;
+                return fixed4(mixedCol, clouds.a);
             }
             ENDCG
         }
