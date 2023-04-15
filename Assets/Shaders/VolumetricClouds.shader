@@ -178,12 +178,14 @@ Shader "haslo/VolumetricClouds" {
             fixed4 raymarch(float3 cameraPos, float3 viewDir, fixed4 backgroundCol, float depth) {
                 fixed4 col = fixed4(0, 0, 0, 0);
                 float ct = 0;
+
+                float3 marchPos = float3(cameraPos.x + _Time.x, cameraPos.xy); 
                 
-                MARCH(_Steps, map1, cameraPos, viewDir, backgroundCol, col, depth, ct);
-                MARCH(_Steps, map2, cameraPos, viewDir, backgroundCol, col, depth * 2, ct);
-                MARCH(_Steps, map3, cameraPos, viewDir, backgroundCol, col, depth * 4, ct);
-                MARCH(_Steps, map4, cameraPos, viewDir, backgroundCol, col, depth * 8, ct);
-                MARCH(_Steps, map5, cameraPos, viewDir, backgroundCol, col, depth * 16, ct);
+                MARCH(_Steps, map1, marchPos, viewDir, backgroundCol, col, depth, ct);
+                MARCH(_Steps, map2, marchPos, viewDir, backgroundCol, col, depth * 2, ct);
+                MARCH(_Steps, map3, marchPos, viewDir, backgroundCol, col, depth * 3, ct);
+                MARCH(_Steps, map4, marchPos, viewDir, backgroundCol, col, depth * 4, ct);
+                MARCH(_Steps, map5, marchPos, viewDir, backgroundCol, col, depth * 5, ct);
                 
                 return clamp(col, 0, 1);
             }
