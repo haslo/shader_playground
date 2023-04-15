@@ -397,15 +397,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -451,6 +451,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 399b3f4c0f8f54df6a3998012e02f031, type: 2}
+    - target: {fileID: -5754084199372789682, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -4315269928209981340, guid: 332e4be03b5214bbaa6c5485e519cf25, type: 3}
     - target: {fileID: 919132149155446097, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_Name
       value: Skellie Advanced
@@ -480,7 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecac0caf8069844fcb9cd136b6a291b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 17
+  rotationSpeed: 27
 --- !u!4 &505630661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
@@ -524,7 +528,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623559538}
   m_LocalRotation: {x: -0, y: -0.8954824, z: -0, w: 0.44509703}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -820,15 +824,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -874,6 +878,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ab17a14a61d3842f5a87613f41612ac5, type: 2}
+    - target: {fileID: -5754084199372789682, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -4315269928209981340, guid: 332e4be03b5214bbaa6c5485e519cf25, type: 3}
     - target: {fileID: 919132149155446097, guid: b0cc30fcf0f8446db9cd48a316e2b7aa, type: 3}
       propertyPath: m_Name
       value: Skellie Simple
