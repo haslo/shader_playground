@@ -78,12 +78,12 @@ Material:
     - _NumSteps: 21.4
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Scale: 1.1
+    - _Scale: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StepScale: 4.6
-    - _Steps: 91
+    - _StepScale: 3.7
+    - _Steps: 20
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

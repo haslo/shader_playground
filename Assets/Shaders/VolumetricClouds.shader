@@ -76,7 +76,7 @@ Shader "haslo/VolumetricClouds" {
                     }
                     ZValues[z] = lerp(YValues[0], YValues[1], interp.y);
                 }
-                const float noise = -1.0 + 2.0 * lerp(ZValues[0], ZValues[1], interp.z);
+                const float noise = -1.4 + 2.0 * lerp(ZValues[0], ZValues[1], interp.z);
                 return noise;
             }
 
@@ -112,7 +112,66 @@ Shader "haslo/VolumetricClouds" {
 
             float map1(float3 q) {
                 float3 p = q;
-                float f = 0.5 * noise3d(q);
+                float f;
+                f = 0.5 * noise3d(q);
+                q = q * 2;
+                f += 0.25 * noise3d(q);
+                return NOISEPROC(f, p);
+            }
+
+            float map2(float3 q) {
+                float3 p = q;
+                float f;
+                f = 0.5 * noise3d(q);
+                q = q * 2;
+                f += 0.25 * noise3d(q);
+                q = q * 3;
+                f += 0.125 * noise3d(q);
+                return NOISEPROC(f, p);
+            }
+
+            float map3(float3 q) {
+                float3 p = q;
+                float f;
+                f = 0.5 * noise3d(q);
+                q = q * 2;
+                f += 0.25 * noise3d(q);
+                q = q * 3;
+                f += 0.125 * noise3d(q);
+                q = q * 4;
+                f += 0.0625 * noise3d(q);
+                return NOISEPROC(f, p);
+            }
+
+            float map4(float3 q) {
+                float3 p = q;
+                float f;
+                f = 0.5 * noise3d(q);
+                q = q * 2;
+                f += 0.25 * noise3d(q);
+                q = q * 3;
+                f += 0.125 * noise3d(q);
+                q = q * 4;
+                f += 0.0625 * noise3d(q);
+                q = q * 5;
+                f += 0.03125 * noise3d(q);
+                return NOISEPROC(f, p);
+            }
+
+            float map5(float3 q) {
+                float3 p = q;
+                float f;
+                f = 0.5 * noise3d(q);
+                q = q * 2;
+                f += 0.25 * noise3d(q);
+                q = q * 3;
+                f += 0.125 * noise3d(q);
+                q = q * 4;
+                f += 0.0625 * noise3d(q);
+                q = q * 5;
+                f += 0.03125 * noise3d(q);
+                q = q * 6;
+                f += 0.015625 * noise3d(q);
                 return NOISEPROC(f, p);
             }
             
@@ -121,6 +180,10 @@ Shader "haslo/VolumetricClouds" {
                 float ct = 0;
                 
                 MARCH(_Steps, map1, cameraPos, viewDir, backgroundCol, col, depth, ct);
+                MARCH(_Steps, map2, cameraPos, viewDir, backgroundCol, col, depth * 2, ct);
+                MARCH(_Steps, map3, cameraPos, viewDir, backgroundCol, col, depth * 4, ct);
+                MARCH(_Steps, map4, cameraPos, viewDir, backgroundCol, col, depth * 8, ct);
+                MARCH(_Steps, map5, cameraPos, viewDir, backgroundCol, col, depth * 16, ct);
                 
                 return clamp(col, 0, 1);
             }
