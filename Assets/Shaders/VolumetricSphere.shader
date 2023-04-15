@@ -18,17 +18,22 @@ Shader "haslo/VolumetricSphere" {
             struct appdata {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct v2f {
                 float3 wPos : TEXCOORD0;
                 float4 pos : SV_POSITION;
+                fixed4 diff : COLOR0;
             };
 
             v2f vert(appdata v) {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.wPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                half3 worldNormal = UnityObjectToWorldNormal(v.normal);
+                half geometryNL = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
+                o.diff = geometryNL * _LightColor0;
                 return o;
             }
 
@@ -62,7 +67,9 @@ Shader "haslo/VolumetricSphere" {
                     // depth *= nl * _LightColor0 + 1;
                     // return fixed4(depth, 1);
                     // return fixed4(depth.x, depth.y, depth.z, 1);
-                    return fixed4(nl * _LightColor0.r, nl * _LightColor0.g, nl * _LightColor0.b, 1);
+                    depth *= i.diff;
+                    return fixed4(depth, 1); 
+                    // return fixed4(nl * _LightColor0.r, nl * _LightColor0.g, nl * _LightColor0.b, 1);
                 } else {
                     return fixed4(1, 1, 1, 0);
                 }
