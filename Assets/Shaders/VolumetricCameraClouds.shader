@@ -1,9 +1,12 @@
 Shader "haslo/VolumetricCameraClouds" {
     Properties {
         _MainTex("", 2D) = "white" {}
+
     }
     SubShader {
-        ZTest Always Cull Off Zwrite Off
+
+        ZTest Always Cull Off ZWrite Off
+
 
         Pass {
             CGPROGRAM
@@ -25,7 +28,7 @@ Shader "haslo/VolumetricCameraClouds" {
             float _Steps;
             float4 _SunDir;
             sampler2D _CameraDepthTexture;
-            
+
             sampler2D _MainTex;
             float4 _MainTex_TexelSize;
             sampler2D _ValueNoise;
@@ -79,7 +82,7 @@ Shader "haslo/VolumetricCameraClouds" {
                 float2 rg = tex2Dlod(_ValueNoise, float4(uv / 256, 0, 0)).rg;
                 return -1.0 + 2.0 * lerp(rg.g, rg.r, f.z);
             }
-            
+
             float map5(float3 q) {
                 float3 p = q;
                 float f;
@@ -161,14 +164,14 @@ Shader "haslo/VolumetricCameraClouds" {
 
             v2f vert(appdata_img v) {
                 v2f o;
-                
+
                 half index = v.vertex.z;
                 v.vertex.z = 0.1;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.texcoord.xy;
 
-                #if UNITY_UV_STARTS_AT_TOP
-                    if (_MainTex_TexelSize.y < 0) {
+                #if UNITY_UV_START_AT_TOP
+                    if(_MainTexSize.y < 0) {
                         o.uv.y = 1 - o.uv.y;
                     }
                 #endif
@@ -176,7 +179,7 @@ Shader "haslo/VolumetricCameraClouds" {
                 o.view = _FrustumCornersWS[(int)index];
                 o.view /= abs(o.view.z);
                 o.view = mul(_CameraInvViewMatrix, o.view);
-                
+
                 return o;
             }
 
@@ -184,18 +187,18 @@ Shader "haslo/VolumetricCameraClouds" {
                 float3 start = _CameraPosWS;
                 float2 duv = i.uv;
 
-                #if UNITY_UV_STARTS_AT_TOP
-                    if (_MainTex_TexelSize.y < 0) {
+                #if UNITY_UV_START_AT_TOP
+                    if(_MainTexSize.y < 0) {
                         duv.y = 1 - duv.y;
                     }
                 #endif
 
                 float depth = LinearEyeDepth(tex2D(_CameraDepthTexture, duv).r);
-                depth *= length(normalize(i.view)); // ??
+                depth *= length(normalize(i.view));
 
                 fixed4 col = tex2D(_MainTex, i.uv);
                 fixed4 sum = raymarch(start, normalize(i.view), col, depth);
-                return fixed4(col * (1 - sum.a) + sum.rgb, 1.0);
+                return fixed4(col * (1.0 - sum.a) + sum.rgb, 1.0);
             }
             ENDCG
         }

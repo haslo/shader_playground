@@ -13,7 +13,7 @@ public class CameraClouds : MonoBehaviour {
     [SerializeField] private Transform sun;
 
     private Camera theCamera;
-    private Material theMaterial;
+    [SerializeField] private Material theMaterial;
 
     public Material TheMaterial {
         get {
@@ -35,8 +35,9 @@ public class CameraClouds : MonoBehaviour {
     }
 
     public void Start() {
-        if (theMaterial) {
+        if (theMaterial.shader == null) {
             DestroyImmediate(theMaterial);
+            theMaterial = TheMaterial;
         }
     }
 
