@@ -12,78 +12,78 @@ public class CameraClouds : MonoBehaviour {
     [SerializeField] private Texture valueNoiseImage;
     [SerializeField] private Transform sun;
 
-    private Camera camera;
-    private Material material;
+    private Camera theCamera;
+    private Material theMaterial;
 
-    public Material Material {
+    public Material TheMaterial {
         get {
-            if (material == null && cloudShader != null) {
-                material = new Material(cloudShader);
+            if (theMaterial == null && cloudShader != null) {
+                theMaterial = new Material(cloudShader);
             }
 
-            if (material != null && cloudShader == null) {
-                DestroyImmediate(material);
+            if (theMaterial != null && cloudShader == null) {
+                DestroyImmediate(theMaterial);
             }
 
-            if (material != null && cloudShader != null && cloudShader != material.shader) {
-                DestroyImmediate(material);
-                material = new Material(cloudShader);
+            if (theMaterial != null && cloudShader != null && cloudShader != theMaterial.shader) {
+                DestroyImmediate(theMaterial);
+                theMaterial = new Material(cloudShader);
             }
 
-            return material;
+            return theMaterial;
         }
     }
 
     public void Start() {
-        if (material) {
-            DestroyImmediate(material);
+        if (theMaterial) {
+            DestroyImmediate(theMaterial);
         }
     }
 
     [ImageEffectOpaque]
     public void OnRenderImage(RenderTexture source, RenderTexture destination) {
-        if (material == null || valueNoiseImage == null) {
+        if (theMaterial == null || valueNoiseImage == null) {
             Graphics.Blit(source, destination);
             return;
         }
 
-        if (camera == null) {
-            camera = GetComponent<Camera>();
+        if (theCamera == null) {
+            theCamera = GetComponent<Camera>();
         }
 
-        Material.SetTexture("_ValueNoise", valueNoiseImage);
+        TheMaterial.SetTexture("_ValueNoise", valueNoiseImage);
         if (sun != null) {
-            Material.SetVector("_SunDir", sun.forward);
+            TheMaterial.SetVector("_SunDir", sun.forward);
         } else {
-            Material.SetVector("_SunDir", Vector3.up);
+            TheMaterial.SetVector("_SunDir", Vector3.up);
         }
 
-        Material.SetFloat("_MinHeight", minHeight);
-        Material.SetFloat("_MaxHeight", maxHeight);
-        Material.SetFloat("_FadeDist", fadeDist);
-        Material.SetFloat("_Scale", scale);
-        Material.SetFloat("_Steps", steps);
+        TheMaterial.SetFloat("_MinHeight", minHeight);
+        TheMaterial.SetFloat("_MaxHeight", maxHeight);
+        TheMaterial.SetFloat("_FadeDist", fadeDist);
+        TheMaterial.SetFloat("_Scale", scale);
+        TheMaterial.SetFloat("_Steps", steps);
 
-        Material.SetMatrix("_FrustumCornersWS", GetFrustumCorners());
-        Material.SetMatrix("_CameraInvViewMatrix", camera.cameraToWorldMatrix);
-        Material.SetVector("_CameraPosWS", camera.transform.position);
+        TheMaterial.SetMatrix("_FrustumCornersWS", GetFrustumCorners());
+        TheMaterial.SetMatrix("_CameraInvViewMatrix", theCamera.cameraToWorldMatrix);
+        TheMaterial.SetVector("_CameraPosWS", theCamera.transform.position);
 
-        CustomGraphicsBlit(source, destination, Material, 0);
+        CustomGraphicsBlit(source, destination, TheMaterial, 0);
     }
 
     private Matrix4x4 GetFrustumCorners() {
         Matrix4x4 frustumCorners = Matrix4x4.identity;
         Vector3[] frustumCornerVectors = new Vector3[4];
 
-        camera.CalculateFrustumCorners(new Rect(0, 0, 1, 1),
-            camera.farClipPlane,
+        theCamera.CalculateFrustumCorners(new Rect(0, 0, 1, 1),
+            theCamera.farClipPlane,
             Camera.MonoOrStereoscopicEye.Mono,
             frustumCornerVectors);
         frustumCorners.SetRow(0, frustumCornerVectors[1]);
         frustumCorners.SetRow(1, frustumCornerVectors[2]);
         frustumCorners.SetRow(2, frustumCornerVectors[3]);
         frustumCorners.SetRow(3, frustumCornerVectors[0]);
-
+        
         return frustumCorners;
     }
     
@@ -107,8 +107,8 @@ public class CameraClouds : MonoBehaviour {
     }
 
     protected void OnDisable() {
-        if (material) {
-            DestroyImmediate(material);
+        if (theMaterial) {
+            DestroyImmediate(theMaterial);
         }
     }
 }

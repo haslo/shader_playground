@@ -1,41 +1,20 @@
 Shader "haslo/VolumetricCameraClouds" {
     Properties {
-        _Scale ("Scale", Range (0.1, 10.0)) = 2.0
-        _StepScale ("Step Scale", Range (0.1, 100.0)) = 1
-        _Steps ("Steps", Range(1,200)) = 60
-        _MinHeight ("Min Height", Range (0.0, 5.0)) = 0
-        _MaxHeight ("Max Height", Range (6.0, 10.0)) = 10
-        _FadeDist ("Fade Distance", Range (0.0, 10.0)) = 0.5
-        _SunDir ("Sun Direction", Vector) = (1,0,0,0)
-
+        _MainTex("", 2D) = "white" {}
     }
     SubShader {
-        Tags {
-            "Queue"="Transparent"
-        }
-        Blend SrcAlpha OneMinusSrcAlpha
-        Cull Off Lighting Off ZWrite Off
-        ZTest Always
-
-
+        ZTest Always Cull Off Zwrite Off
 
         Pass {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
             #include "UnityCG.cginc"
-
-            struct appdata {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
 
             struct v2f {
                 float4 pos : SV_POSITION;
-                float3 view : TEXCOORD0;
-                float4 projPos : TEXCOORD1;
-                float3 wpos : TEXCOORD2;
+                float2 uv : TEXCOORD0;
+                float3 view : TEXCOORD1;
             };
 
             float _MinHeight;
@@ -46,43 +25,14 @@ Shader "haslo/VolumetricCameraClouds" {
             float _Steps;
             float4 _SunDir;
             sampler2D _CameraDepthTexture;
+            
+            sampler2D _MainTex;
+            float4 _MainTex_TexelSize;
+            sampler2D _ValueNoise;
 
-            float random(float3 value, float3 dotDir) {
-                float3 smallV = sin(value);
-                float random = dot(smallV, dotDir);
-                random = frac(sin(random) * 123574.43212);
-                return random;
-            }
-
-            float3 random3d(float3 value) {
-                return float3(random(value, float3(12.898, 68.54, 37.7298)),
-                              random(value, float3(39.898, 26.54, 85.7238)),
-                              random(value, float3(76.898, 12.54, 8.6788)));
-            }
-
-            float noise3d(float3 value) {
-                value *= _Scale;
-                value.x += _Time.x * 5;
-                float3 interp = frac(value);
-                interp = smoothstep(0.0, 1.0, interp);
-
-                float3 ZValues[2];
-                for (int z = 0; z <= 1; z++) {
-                    float3 YValues[2];
-                    for (int y = 0; y <= 1; y++) {
-                        float3 XValues[2];
-                        for (int x = 0; x <= 1; x++) {
-                            float3 cell = floor(value) + float3(x, y, z);
-                            XValues[x] = random3d(cell);
-                        }
-                        YValues[y] = lerp(XValues[0], XValues[1], interp.x);
-                    }
-                    ZValues[z] = lerp(YValues[0], YValues[1], interp.y);
-                }
-
-                float noise = -1.0 + 2.0 * lerp(ZValues[0], ZValues[1], interp.z);
-                return noise;
-            }
+            float4x4 _FrustumCornersWS;
+            float4x4 _CameraInvViewMatrix;
+            float4 _CameraPosWS;
 
             fixed4 integrate(fixed4 sum, float diffuse, float density, fixed4 bgcol, float t) {
                 fixed3 lighting = fixed3(0.65, 0.68, 0.7) * 1.3 + 0.5 * fixed3(0.7, 0.5, 0.3) * diffuse;
@@ -117,62 +67,72 @@ Shader "haslo/VolumetricCameraClouds" {
                 } \
             }
 
-
             #define NOISEPROC(N, P) 1.75 * N * saturate((_MaxHeight - P.y)/_FadeDist)
 
+            float noiseFromImage(float3 x) {
+                x *= _Scale;
+                float3 p = floor(x);
+                float3 f = frac(x);
+                f = smoothstep(0, 1, f);
+
+                float2 uv = (p.xy + float2(37.0, -17.0) * p.z) + f.xy;
+                float2 rg = tex2Dlod(_ValueNoise, float4(uv / 256, 0, 0)).rg;
+                return -1.0 + 2.0 * lerp(rg.g, rg.r, f.z);
+            }
+            
             float map5(float3 q) {
                 float3 p = q;
                 float f;
-                f = 0.5 * noise3d(q);
+                f = 0.5 * noiseFromImage(q);
                 q = q * 2;
-                f += 0.25 * noise3d(q);
+                f += 0.25 * noiseFromImage(q);
                 q = q * 3;
-                f += 0.125 * noise3d(q);
+                f += 0.125 * noiseFromImage(q);
                 q = q * 4;
-                f += 0.06250 * noise3d(q);
+                f += 0.06250 * noiseFromImage(q);
                 q = q * 5;
-                f += 0.03125 * noise3d(q);
+                f += 0.03125 * noiseFromImage(q);
                 q = q * 6;
-                f += 0.015625 * noise3d(q);
+                f += 0.015625 * noiseFromImage(q);
                 return NOISEPROC(f, p);
             }
 
             float map4(float3 q) {
                 float3 p = q;
                 float f;
-                f = 0.5 * noise3d(q);
+                f = 0.5 * noiseFromImage(q);
                 q = q * 2;
-                f += 0.25 * noise3d(q);
+                f += 0.25 * noiseFromImage(q);
                 q = q * 3;
-                f += 0.125 * noise3d(q);
+                f += 0.125 * noiseFromImage(q);
                 q = q * 4;
-                f += 0.06250 * noise3d(q);
+                f += 0.06250 * noiseFromImage(q);
                 q = q * 5;
-                f += 0.03125 * noise3d(q);
+                f += 0.03125 * noiseFromImage(q);
                 return NOISEPROC(f, p);
             }
 
             float map3(float3 q) {
                 float3 p = q;
                 float f;
-                f = 0.5 * noise3d(q);
+                f = 0.5 * noiseFromImage(q);
                 q = q * 2;
-                f += 0.25 * noise3d(q);
+                f += 0.25 * noiseFromImage(q);
                 q = q * 3;
-                f += 0.125 * noise3d(q);
+                f += 0.125 * noiseFromImage(q);
                 q = q * 4;
-                f += 0.06250 * noise3d(q);
+                f += 0.06250 * noiseFromImage(q);
                 return NOISEPROC(f, p);
             }
 
             float map2(float3 q) {
                 float3 p = q;
                 float f;
-                f = 0.5 * noise3d(q);
+                f = 0.5 * noiseFromImage(q);
                 q = q * 2;
-                f += 0.25 * noise3d(q);
+                f += 0.25 * noiseFromImage(q);
                 q = q * 3;
-                f += 0.125 * noise3d(q);
+                f += 0.125 * noiseFromImage(q);
                 return NOISEPROC(f, p);
             }
 
@@ -180,9 +140,9 @@ Shader "haslo/VolumetricCameraClouds" {
             float map1(float3 q) {
                 float3 p = q;
                 float f;
-                f = 0.5 * noise3d(q);
+                f = 0.5 * noiseFromImage(q);
                 q = q * 2;
-                f += 0.25 * noise3d(q);
+                f += 0.25 * noiseFromImage(q);
                 return NOISEPROC(f, p);
             }
 
@@ -199,22 +159,43 @@ Shader "haslo/VolumetricCameraClouds" {
                 return clamp(col, 0.0, 1.0);
             }
 
-            v2f vert(appdata v) {
+            v2f vert(appdata_img v) {
                 v2f o;
-                o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                
+                half index = v.vertex.z;
+                v.vertex.z = 0.1;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.view = o.wpos - _WorldSpaceCameraPos;
-                o.projPos = ComputeScreenPos(o.pos);
+                o.uv = v.texcoord.xy;
+
+                #if UNITY_UV_STARTS_AT_TOP
+                    if (_MainTex_TexelSize.y < 0) {
+                        o.uv.y = 1 - o.uv.y;
+                    }
+                #endif
+
+                o.view = _FrustumCornersWS[(int)index];
+                o.view /= abs(o.view.z);
+                o.view = mul(_CameraInvViewMatrix, o.view);
+                
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target {
-                float depth = 1;
-                depth *= length(i.view);
-                fixed4 col = fixed4(1, 1, 1, 0);
-                fixed4 clouds = raymarch(_WorldSpaceCameraPos, normalize(i.view) * _StepScale, col, depth);
-                fixed3 mixedCol = col * (1.0 - clouds.a) + clouds.rgb;
-                return fixed4(mixedCol, clouds.a);
+                float3 start = _CameraPosWS;
+                float2 duv = i.uv;
+
+                #if UNITY_UV_STARTS_AT_TOP
+                    if (_MainTex_TexelSize.y < 0) {
+                        duv.y = 1 - duv.y;
+                    }
+                #endif
+
+                float depth = LinearEyeDepth(tex2D(_CameraDepthTexture, duv).r);
+                depth *= length(normalize(i.view)); // ??
+
+                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 sum = raymarch(start, normalize(i.view), col, depth);
+                return fixed4(col * (1 - sum.a) + sum.rgb, 1.0);
             }
             ENDCG
         }
