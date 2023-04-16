@@ -35,6 +35,7 @@ public class CameraClouds : MonoBehaviour {
     }
 
     public void Start() {
+        // this is very very wonky
         if (theMaterial.shader == null) {
             DestroyImmediate(theMaterial);
             theMaterial = TheMaterial;
@@ -80,10 +81,14 @@ public class CameraClouds : MonoBehaviour {
             theCamera.farClipPlane,
             Camera.MonoOrStereoscopicEye.Mono,
             frustumCornerVectors);
-        frustumCorners.SetRow(0, frustumCornerVectors[1]);
-        frustumCorners.SetRow(1, frustumCornerVectors[2]);
-        frustumCorners.SetRow(2, frustumCornerVectors[3]);
-        frustumCorners.SetRow(3, frustumCornerVectors[0]);
+        // frustumCorners.SetRow(0, Vector4.Scale(frustumCornerVectors[1], new Vector4(1, 1, -1, 1)));
+        // frustumCorners.SetRow(1, Vector4.Scale(frustumCornerVectors[2], new Vector4(1, 1, -1, 1)));
+        // frustumCorners.SetRow(2, Vector4.Scale(frustumCornerVectors[3], new Vector4(1, 1, -1, 1)));
+        // frustumCorners.SetRow(3, Vector4.Scale(frustumCornerVectors[0], new Vector4(1, 1, -1, 1)));
+        frustumCorners.SetRow(0, Vector3.Scale(frustumCornerVectors[1], new Vector3(1, 1, -1)));
+        frustumCorners.SetRow(1, Vector3.Scale(frustumCornerVectors[2], new Vector3(1, 1, -1)));
+        frustumCorners.SetRow(2, Vector3.Scale(frustumCornerVectors[3], new Vector3(1, 1, -1)));
+        frustumCorners.SetRow(3, Vector3.Scale(frustumCornerVectors[0], new Vector3(1, 1, -1)));
         
         return frustumCorners;
     }
